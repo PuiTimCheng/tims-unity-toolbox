@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
@@ -15,13 +17,32 @@ namespace TimToolBox {
             Folders.CreateDefault("_Project", "Animation", "Art", "Materials", "Prefabs", "Scripts/ScriptableObjects", "Scripts/UI");
             Refresh();
         }
-
-        [MenuItem("Tools/Setup/Import My Favorite Assets")]
+        
+        [MenuItem("Tools/Setup/Import Must Have Folders")]
+        public static void ImportMustHavePackages() {
+            try {
+                var folderPath = "F:/GameDev/UnityPlugins/_mustHaveInProject";
+                // Get all files with a .unitypackage extension in the specified folder
+                string[] packageFiles = Directory.GetFiles(folderPath, "*.unitypackage");
+                // Display the package names
+                foreach (var packageFileName in packageFiles)
+                {
+                    Debug.Log("Unity Package Name: " + GetFileNameWithoutExtension(packageFileName));
+                    Assets.ImportAsset(packageFileName, "",folderPath, false);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("Error retrieving package names: " + e.Message);
+            }
+        }
+        
+        //[MenuItem("Tools/Setup/Import My Favorite Assets")]
         public static void ImportMyFavoriteAssets() {
             Assets.ImportAsset("DOTween HOTween v2.unitypackage", "Demigiant/ScriptingAnimation");
         }
 
-        [MenuItem("Tools/Setup/Install Netcode for GameObjects")]
+        //[MenuItem("Tools/Setup/Install Netcode for GameObjects")]
         public static void InstallNetcodeForGameObjects() {
             Packages.InstallPackages(new[] {
                 "com.unity.multiplayer.tools",
@@ -29,14 +50,14 @@ namespace TimToolBox {
             });
         }
 
-        [MenuItem("Tools/Setup/Install Unity AI Navigation")]
+        //[MenuItem("Tools/Setup/Install Unity AI Navigation")]
         public static void InstallUnityAINavigation() {
             Packages.InstallPackages(new[] {
                 "com.unity.ai.navigation"
             });
         }
 
-        [MenuItem("Tools/Setup/Install My Favorite Open Source")]
+        //[MenuItem("Tools/Setup/Install My Favorite Open Source")]
         public static void InstallOpenSource() {
             Packages.InstallPackages(new[] {
                 "git+https://github.com/KyleBanks/scene-ref-attribute",
@@ -105,8 +126,8 @@ namespace TimToolBox {
 
         static class Assets {
             public static void ImportAsset(string asset, string subfolder,
-                string rootFolder = "C:/Users/adam/AppData/Roaming/Unity/Asset Store-5.x") {
-                ImportPackage(Combine(rootFolder, subfolder, asset), false);
+                string rootFolder = "C:/Users/adam/AppData/Roaming/Unity/Asset Store-5.x", bool interactive = false) {
+                ImportPackage(Combine(rootFolder, subfolder, asset), interactive);
             }
         }
     }
