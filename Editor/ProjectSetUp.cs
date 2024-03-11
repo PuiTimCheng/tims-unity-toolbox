@@ -43,6 +43,7 @@ namespace TimToolBox {
             Packages.InstallPackages(new[] {
                 "com.unity.addressables",
                 "com.unity.inputsystem",
+                "com.unity.cinemachine",
             });
         }
         
