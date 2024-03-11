@@ -37,6 +37,15 @@ namespace TimToolBox {
             }
         }
         
+        [MenuItem("Tools/Setup/Import Basic Unity Packages")]
+        public static void ImportBasicUnityPackages() {
+            Debug.Log("Started ImportUnityAddressables");
+            Packages.InstallPackages(new[] {
+                "com.unity.addressables",
+                "com.unity.inputsystem",
+            });
+        }
+        
         //[MenuItem("Tools/Setup/Import My Favorite Assets")]
         public static void ImportMyFavoriteAssets() {
             Assets.ImportAsset("DOTween HOTween v2.unitypackage", "Demigiant/ScriptingAnimation");
