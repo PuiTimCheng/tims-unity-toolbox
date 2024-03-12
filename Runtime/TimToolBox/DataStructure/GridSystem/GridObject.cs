@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 namespace TimToolBox.DataStructure {
-    public abstract class GridObject<T> {
+    public class GridObject<T> {
         GridSystem2D<GridObject<T>> grid;
         int x;
         int y;
