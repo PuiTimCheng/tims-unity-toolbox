@@ -39,7 +39,6 @@ namespace TimToolBox {
         
         [MenuItem("Tools/Setup/Import Basic Unity Packages")]
         public static void ImportBasicUnityPackages() {
-            Debug.Log("Started ImportUnityAddressables");
             Packages.InstallPackages(new[] {
                 "com.unity.addressables",
                 "com.unity.inputsystem",
@@ -136,7 +135,7 @@ namespace TimToolBox {
 
         static class Assets {
             public static void ImportAsset(string asset, string subfolder,
-                string rootFolder = "C:/Users/adam/AppData/Roaming/Unity/Asset Store-5.x", bool interactive = false) {
+                string rootFolder = "F:/GameDev/UnityPlugins/_mustHaveInProject", bool interactive = false) {
                 ImportPackage(Combine(rootFolder, subfolder, asset), interactive);
             }
         }
