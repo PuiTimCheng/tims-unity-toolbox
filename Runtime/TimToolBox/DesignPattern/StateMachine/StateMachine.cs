@@ -3,44 +3,53 @@ using System.Collections.Generic;
 
 namespace TimToolBox.DesignPattern.StateMachine {
     public class StateMachine {
-        StateNode current;
-        Dictionary<Type, StateNode> nodes = new();
-        HashSet<IStateTransition> anyTransitions = new();
+        StateNode _current;
+        Dictionary<Type, StateNode> _nodes = new();
+        HashSet<IStateTransition> _anyTransitions = new();
 
         public void Update() {
             var transition = GetTransition();
             if (transition != null)
                 ChangeState(transition.To);
 
-            current.State?.OnUpdate();
+            _current.State?.OnUpdate();
         }
 
         public void FixedUpdate() {
-            current.State?.OnFixedUpdate();
+            _current.State?.OnFixedUpdate();
         }
 
+        public IState GetState<T>() where T : IState {
+            return _nodes.GetValueOrDefault(typeof(T))?.State;
+        }
+        
         public void SetState(IState state) {
-            current = nodes[state.GetType()];
-            current.State?.OnEnter();
+            _current = _nodes[state.GetType()];
+            _current.State?.OnEnter();
         }
 
-        void ChangeState(IState state) {
-            if (state == current.State) return;
+        public void ChangeState<T>() where T : IState {
+            var state = _nodes.GetValueOrDefault(typeof(T))?.State;
+            if(state != default) ChangeState(state);
+        }
+        
+        public void ChangeState(IState state) {
+            if (state == _current.State) return;
 
-            var previousState = current.State;
-            var nextState = nodes[state.GetType()].State;
+            var previousState = _current.State;
+            var nextState = _nodes[state.GetType()].State;
 
             previousState?.OnExit();
             nextState?.OnEnter();
-            current = nodes[state.GetType()];
+            _current = _nodes[state.GetType()];
         }
 
         IStateTransition GetTransition() {
-            foreach (var transition in anyTransitions)
+            foreach (var transition in _anyTransitions)
                 if (transition.Condition.Evaluate())
                     return transition;
 
-            foreach (var transition in current.Transitions)
+            foreach (var transition in _current.Transitions)
                 if (transition.Condition.Evaluate())
                     return transition;
 
@@ -52,15 +61,15 @@ namespace TimToolBox.DesignPattern.StateMachine {
         }
 
         public void AddAnyTransition(IState to, IStatePredicate condition) {
-            anyTransitions.Add(new StateTransition(GetOrAddNode(to).State, condition));
+            _anyTransitions.Add(new StateTransition(GetOrAddNode(to).State, condition));
         }
 
         StateNode GetOrAddNode(IState state) {
-            var node = nodes.GetValueOrDefault(state.GetType());
+            var node = _nodes.GetValueOrDefault(state.GetType());
 
             if (node == null) {
                 node = new StateNode(state);
-                nodes.Add(state.GetType(), node);
+                _nodes.Add(state.GetType(), node);
             }
 
             return node;
