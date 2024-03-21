@@ -6,6 +6,7 @@ namespace TimToolBox.DesignPattern.StateMachine {
         StateNode _current;
         Dictionary<Type, StateNode> _nodes = new();
         HashSet<IStateTransition> _anyTransitions = new();
+        public IState CurrentState => _current.State;
 
         public void Update() {
             var transition = GetTransition();
@@ -22,7 +23,7 @@ namespace TimToolBox.DesignPattern.StateMachine {
         public IState GetState<T>() where T : IState {
             return _nodes.GetValueOrDefault(typeof(T))?.State;
         }
-        
+
         public void SetState(IState state) {
             _current = _nodes[state.GetType()];
             _current.State?.OnEnter();
@@ -30,9 +31,9 @@ namespace TimToolBox.DesignPattern.StateMachine {
 
         public void ChangeState<T>() where T : IState {
             var state = _nodes.GetValueOrDefault(typeof(T))?.State;
-            if(state != default) ChangeState(state);
+            if (state != default) ChangeState(state);
         }
-        
+
         public void ChangeState(IState state) {
             if (state == _current.State) return;
 
