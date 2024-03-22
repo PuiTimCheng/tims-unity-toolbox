@@ -57,11 +57,11 @@ namespace TimToolBox.DesignPattern.StateMachine {
             return null;
         }
 
-        public void AddTransition(IState from, IState to, IStatePredicate condition) {
+        public void AddTransition(IState from, IState to, IPredicate condition) {
             GetOrAddNode(from).AddTransition(GetOrAddNode(to).State, condition);
         }
 
-        public void AddAnyTransition(IState to, IStatePredicate condition) {
+        public void AddAnyTransition(IState to, IPredicate condition) {
             _anyTransitions.Add(new StateTransition(GetOrAddNode(to).State, condition));
         }
 
@@ -85,7 +85,7 @@ namespace TimToolBox.DesignPattern.StateMachine {
                 Transitions = new HashSet<IStateTransition>();
             }
 
-            public void AddTransition(IState to, IStatePredicate condition) {
+            public void AddTransition(IState to, IPredicate condition) {
                 Transitions.Add(new StateTransition(to, condition));
             }
         }
