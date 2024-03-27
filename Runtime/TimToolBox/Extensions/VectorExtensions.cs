@@ -19,7 +19,7 @@ namespace TimToolBox.Extensions
         }
         public static Vector3 Multiply(this Vector3 vector, float? x = null, float? y = null, float? z = null)
         {
-            return new Vector3(vector.x * x??1, vector.y * y??1, vector.z * z??1);
+            return new Vector3(vector.x * (x??1), vector.y * (y??1), vector.z * (z??1));
         }
         public static Vector2 XY(this Vector3 v) {
             return new Vector2(v.x, v.y);
@@ -38,7 +38,7 @@ namespace TimToolBox.Extensions
         }
         public static Vector3Int Multiply(this Vector3Int vector, int? x = null, int? y = null, int? z = null)
         {
-            return new Vector3Int(vector.x * x??1, vector.y * y??1, vector.z * z??1);
+            return new Vector3Int(vector.x * (x??1), vector.y * (y??1), vector.z * (z??1));
         }
         public static Vector2Int XY(this Vector3Int v) {
             return new Vector2Int(v.x, v.y);
@@ -57,7 +57,7 @@ namespace TimToolBox.Extensions
         }
         public static Vector2 Multiply(this Vector2 vector, float? x = null, float? y = null)
         {
-            return new Vector2(vector.x * x??1, vector.y * y??1);
+            return new Vector2(vector.x * (x??1), vector.y * (y??1));
         }
         public static Vector3 ToVec3XY(this Vector2 vector)
         {
@@ -86,7 +86,7 @@ namespace TimToolBox.Extensions
         }
         public static Vector2Int Multiply(this Vector2Int vector, int? x = null, int? y = null)
         {
-            return new Vector2Int(vector.x * x??1, vector.y * y??1);
+            return new Vector2Int(vector.x * (x??1), vector.y * (y??1));
         }
         public static Vector3Int ToVec3XY(this Vector2Int vector)
         {
