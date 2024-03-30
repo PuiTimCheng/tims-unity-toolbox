@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace MatchThreeRoguelike
+namespace TimToolBox
 {
     public class RandomSeedGenerator
     {

@@ -1,6 +1,6 @@
 ﻿using TimToolBox.DesignPattern.StateMachine;
 
-namespace MatchThreeRoguelike {
+namespace TimToolBox {
     public class ConditionFlag : IPredicate{
         private bool _flag;
         public void Set() => _flag = true;

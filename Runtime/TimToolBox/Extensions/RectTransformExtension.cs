@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace MatchThreeRoguelike {
+namespace TimToolBox.Extensions {
     public static class RectTransformExtension {
         
         public static void SetSize(this RectTransform rectTransform, Vector2 size) {

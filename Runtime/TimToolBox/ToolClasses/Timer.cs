@@ -1,5 +1,6 @@
 using System;
 
+namespace TimToolBox {
 public class Timer {
     private float _duration;
     private float _startTime;
@@ -78,4 +79,4 @@ public class Timer {
 public class UnscaledTimer : Timer {
     public UnscaledTimer(float duration) : base(duration) { }
     protected override float CurrentTime => UnityEngine.Time.unscaledTime;
-}
+} }
