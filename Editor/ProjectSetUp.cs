@@ -17,11 +17,10 @@ namespace TimToolBox {
             Folders.CreateDefault("_Project", "Animation", "Art", "Materials", "Prefabs", "Scripts/ScriptableObjects", "Scripts/UI");
             Refresh();
         }
-        
         [MenuItem("Tools/Setup/Import Must Have Folders")]
         public static void ImportMustHavePackages() {
             try {
-                var folderPath = "F:/GameDev/UnityPlugins/_mustHaveInProject";
+                var folderPath = "Packages/com.ptcheng.toolbox/unityPackage/MustHavePackages";
                 // Get all files with a .unitypackage extension in the specified folder
                 string[] packageFiles = Directory.GetFiles(folderPath, "*.unitypackage");
                 // Display the package names
