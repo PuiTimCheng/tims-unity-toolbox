@@ -4,7 +4,7 @@ using UnityEngine;
  
 public static class CompilationTool
 {
-    [MenuItem("Tools/Compile Tool/Request Script Compilation")]
+    [MenuItem("Tim'sToolBox/Compile Tool/Request Script Compilation")]
     private static void RequestScriptCompilation()
     {
         CompilationPipeline.RequestScriptCompilation();
