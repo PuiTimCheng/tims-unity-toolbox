@@ -17,6 +17,10 @@ namespace TimToolBox.Extensions
         {
             return new Vector3(vector.x + x, vector.y + y, vector.z + z);
         }
+        public static Vector3 Multiply(this Vector3 vector, Vector3 vector2)
+        {
+            return new Vector3(vector.x * vector2.x, vector.y * vector2.y, vector.z * vector2.z);
+        }
         public static Vector3 Multiply(this Vector3 vector, float? x = null, float? y = null, float? z = null)
         {
             return new Vector3(vector.x * (x??1), vector.y * (y??1), vector.z * (z??1));
@@ -36,6 +40,10 @@ namespace TimToolBox.Extensions
         {
             return new Vector3Int(vector.x + x, vector.y + y, vector.z + z);
         }
+        public static Vector3Int Multiply(this Vector3Int vector, Vector3Int vector2)
+        {
+            return vector.Multiply(vector2.x, vector2.y, vector2.z);
+        }
         public static Vector3Int Multiply(this Vector3Int vector, int? x = null, int? y = null, int? z = null)
         {
             return new Vector3Int(vector.x * (x??1), vector.y * (y??1), vector.z * (z??1));
@@ -54,6 +62,10 @@ namespace TimToolBox.Extensions
         public static Vector2 Offset(this Vector2 vector, float x = 0, float y = 0)
         {
             return new Vector2(vector.x + x, vector.y + y);
+        }
+        public static Vector2 Multiply(this Vector2 vector, Vector2 vector2)
+        {
+            return vector.Multiply(vector2.x, vector2.y);
         }
         public static Vector2 Multiply(this Vector2 vector, float? x = null, float? y = null)
         {
@@ -83,6 +95,10 @@ namespace TimToolBox.Extensions
         public static Vector2Int Offset(this Vector2Int vector, int x = 0, int y = 0)
         {
             return new Vector2Int(vector.x + x, vector.y + y);
+        }
+        public static Vector2Int Multiply(this Vector2Int vector, Vector2Int vector2)
+        {
+            return vector.Multiply(vector2.x, vector2.y);
         }
         public static Vector2Int Multiply(this Vector2Int vector, int? x = null, int? y = null)
         {
