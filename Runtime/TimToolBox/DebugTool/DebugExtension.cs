@@ -41,7 +41,7 @@ namespace TimToolBox.DebugTool {
             }
         }
 
-        public static void DrawArc(Vector3 origin, Quaternion rotation, float radius, float angle, Color color, int segments = 24, float duration = 0.3f)
+        public static void DrawArc(Vector3 origin, Quaternion rotation, float radius, float angle, Color color, int segments = 24, float duration = 0f)
         {
             float angleStep = angle / segments;
             Vector3 previousPoint = origin + rotation * Quaternion.Euler(0, -angle / 2, 0) * Vector3.forward * radius;
