@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using Sirenix.OdinInspector;
 using TimToolBox.Extensions;
 using UnityEngine;
 
 namespace TimToolBox.DebugTool {
-    [ExecuteAlways]
-    public class DebugTextInScene : Singleton<DebugTextInScene>
+    public class DebugTextOnGUI : Singleton<DebugTextOnGUI>
     {
-        public class DebugTextInSceneData {
+        public class DebugTextOnGUIData {
             public string text;
             public Color color;
             public float fontSize;
@@ -16,22 +14,23 @@ namespace TimToolBox.DebugTool {
             public float duration;
             public float startTime;
         }
-        public List<DebugTextInSceneData> datas = new List<DebugTextInSceneData>();
+        public List<DebugTextOnGUIData> datas = new List<DebugTextOnGUIData>();
 
-        [Button]
         public void Test() {
-            Add("TestText", new Vector3(100, 100, 0), Color.red, 20, 5);
+            Add("TestText", new Vector3(100, 100, 0), Color.red, 20, 100);
         }
         
-        public void Add(string text,Vector3 position, Color color, float fontSize, float duration) {
-            datas.Add(new DebugTextInSceneData() {
+        public DebugTextOnGUIData Add(string text,Vector3 position, Color color, float fontSize, float duration) {
+            var data = new DebugTextOnGUIData() {
                 text = text,
                 position = position,
                 color = color,
                 fontSize = fontSize,
                 duration = duration,
                 startTime = Time.time
-            });
+            };
+            datas.Add(data);
+            return data;
         }
 
         private void Update() {

@@ -5,6 +5,37 @@ using UnityEngine;
 
 namespace TimToolBox.DebugTool {
     public static class DebugExtension {
+
+        #region GizmosDraw
+        
+        public static void GizmoDrawLabel(Vector3 position, string text, Color color, float fontSize = 12) {
+#if UNITY_EDITOR
+            var style = new GUIStyle(GUI.skin.box);
+            style.normal.textColor = color;
+            style.fontStyle = FontStyle.Bold;
+            style.alignment = TextAnchor.UpperLeft;
+            UnityEditor.Handles.Label(position, text, style);
+#endif
+        }
+
+        #endregion
+        
+        /// <summary>  Draw an arrow using Debug.Draw</summary>
+        public static void DrawArrow(Vector3 pos, Vector3 direction, Color color, float duration = 0, float arrowHeadLength = 0.25f, float arrowHeadAngle = 20.0f)
+        {
+#if UNITY_EDITOR
+            if (direction == Vector3.zero) return;
+            Debug.DrawRay(pos, direction, color, duration);
+
+            var length = direction.magnitude;
+
+            Vector3 right = Quaternion.LookRotation(direction) * Quaternion.Euler(0, 180 + arrowHeadAngle, 0) * new Vector3(0, 0, 1);
+            Vector3 left = Quaternion.LookRotation(direction) * Quaternion.Euler(0, 180 - arrowHeadAngle, 0) * new Vector3(0, 0, 1);
+            Debug.DrawRay(pos + direction, arrowHeadLength * length * right, color, duration);
+            Debug.DrawRay(pos + direction, arrowHeadLength * length * left, color, duration);
+#endif
+        }
+        
         public static void DrawCircle(Vector3 origin, Quaternion rotation, float radius, Color color,
                                       int segments = 24, float duration = 0.3f) {
             Vector3 previousPoint = origin + rotation * (Vector3.forward * radius);
