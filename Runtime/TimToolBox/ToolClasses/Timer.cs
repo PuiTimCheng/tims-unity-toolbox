@@ -4,72 +4,57 @@ namespace TimToolBox {
 public class Timer {
     private float _duration;
     private float _startTime;
-    private bool _isPaused;
     private float _pauseTime;
 
-    public bool HasStarted { get; private set; }
+    public Action OnTimerStart = delegate { };
+    public Action OnTimerStop = delegate { };
+    public bool IsRunning { get; protected set; }
 
     public Timer(float duration) {
         this._duration = duration;
-        Reset();
+        Start();
     }
-
     protected virtual float CurrentTime => UnityEngine.Time.time;
-
     public float Duration {
         get => _duration;
         set => _duration = value;
     }
 
     public void Start() {
-        HasStarted = true;
         _startTime = CurrentTime;
-        _isPaused = false;
         _pauseTime = _startTime;
+        if (!IsRunning) {
+            IsRunning = true;
+            OnTimerStart.Invoke();
+        }
     }
-
-    public void Reset() {
-        HasStarted = false;
-        _startTime = CurrentTime;
-        _isPaused = false;
-        _pauseTime = _startTime;
-    }
-
     public void Start(float newDuration) {
         _duration = newDuration;
         Start();
     }
-
-    public void Reset(float newDuration) {
-        _duration = newDuration;
-        Reset();
-    }
-    
-    public bool IsPaused => _isPaused;
-
-    public void Pause() {
-        if (!HasStarted) return;
-        if (!_isPaused) {
-            _pauseTime = CurrentTime;
-            _isPaused = true;
+    public void Stop() {
+        if (IsRunning) {
+            IsRunning = false;
+            OnTimerStop.Invoke();
         }
     }
-
+    public void Pause() {
+        if (IsRunning) {
+            IsRunning = false;
+            _pauseTime = CurrentTime;
+        }
+    }
     public void Resume() {
-        if (!HasStarted) return;
-        if (_isPaused) {
+        if (!IsRunning) {
+            IsRunning = true;
             var passedTime = _pauseTime - _startTime;
             _startTime = CurrentTime - passedTime; //set start time to current time minus the time passed while paused
-            _isPaused = false;
         }
     }
+    public bool IsPaused => !IsRunning && TimePassedRatio < 1;
+    public bool IsFinished =>  TimePassed >= _duration;
 
-    public bool IsFinished() {
-        if (!HasStarted || _isPaused) return false;
-        return CurrentTime - _startTime >= _duration;
-    }
-
-    public float TimePassed => !HasStarted ? 0 : !_isPaused ? CurrentTime - _startTime : _pauseTime - _startTime;
+    public float TimePassed => IsRunning ? CurrentTime - _startTime : _pauseTime - _startTime;
     public float TimeLeft => Math.Max(0, _duration - TimePassed);
 
     public float TimePassedRatio => TimePassed / _duration;

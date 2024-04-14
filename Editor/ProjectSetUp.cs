@@ -18,7 +18,7 @@ namespace TimToolBox
         [MenuItem("Tim'sToolBox/Setup/Create Default Folders")]
         public static void CreateDefaultFolders()
         {
-            Folders.CreateDefault("_Project", "Animation", "Art", "Materials", "Prefabs", "Scripts/ScriptableObjects",
+            Folders.CreateDefault("_Project", "Animation", "Art", "Materials", "Prefabs", "Scripts/Core","Scripts/ScriptableObjects",
                 "Scripts/UI");
             Refresh();
         }
@@ -44,7 +44,7 @@ namespace TimToolBox
             }
         }
 
-        [MenuItem("Tools/Setup/Import Basic Unity Packages")]
+        [MenuItem("Tim'sToolBox/Setup/Import Basic Unity Packages")]
         public static void ImportBasicUnityPackages()
         {
             Packages.InstallPackages(new[]

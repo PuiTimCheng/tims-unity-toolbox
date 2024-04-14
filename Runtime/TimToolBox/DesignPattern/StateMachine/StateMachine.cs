@@ -19,7 +19,7 @@ namespace TimToolBox.DesignPattern.StateMachine {
         public void FixedUpdate() {
             _current.State?.OnFixedUpdate();
         }
-
+        
         public IState GetState<T>() where T : IState {
             return _nodes.GetValueOrDefault(typeof(T))?.State;
         }
@@ -35,8 +35,6 @@ namespace TimToolBox.DesignPattern.StateMachine {
         }
 
         public void ChangeState(IState state) {
-            if (state == _current.State) return;
-
             var previousState = _current.State;
             var nextState = _nodes[state.GetType()].State;
 
@@ -60,11 +58,16 @@ namespace TimToolBox.DesignPattern.StateMachine {
         public void AddTransition(IState from, IState to, IPredicate condition) {
             GetOrAddNode(from).AddTransition(GetOrAddNode(to).State, condition);
         }
-
         public void AddAnyTransition(IState to, IPredicate condition) {
             _anyTransitions.Add(new StateTransition(GetOrAddNode(to).State, condition));
         }
-
+        public void AddNode(IState state) {
+            var node = _nodes.GetValueOrDefault(state.GetType());
+            if (node == null) {
+                node = new StateNode(state);
+                _nodes.Add(state.GetType(), node);
+            }
+        }
         StateNode GetOrAddNode(IState state) {
             var node = _nodes.GetValueOrDefault(state.GetType());
 
@@ -75,7 +78,6 @@ namespace TimToolBox.DesignPattern.StateMachine {
 
             return node;
         }
-
         class StateNode {
             public IState State { get; }
             public HashSet<IStateTransition> Transitions { get; }
