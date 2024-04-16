@@ -8,29 +8,19 @@ namespace TimToolBox.ToolClasses.ActionSystem
 {
     public class UnitActionController : MonoBehaviour
     {
-        private StateMachine _stateMachine;
+        private KeyStateMachine<ActionID> _stateMachine;
         
         public void InitController()
         {
-            _stateMachine = new StateMachine();
+            _stateMachine = new KeyStateMachine<ActionID>();
         }
-        public void AddAction(UnitAction unitAction)
+        public void AddAction(ActionID actionID, UnitAction unitAction)
         {
-            _stateMachine.AddStateNode(unitAction);
+            _stateMachine.AddState(actionID, unitAction);
         }
-        public void AddTransition<T1,T2>(IPredicate condition) where T1 : IState where T2 : IState
+        public void AddTransition(ActionID fromActionID, ActionID toActionID,IPredicate condition)
         {
-            _stateMachine.AddTransition(_stateMachine.GetState<T1>(), _stateMachine.GetState<T2>(), 
-                condition);
-        }
-        public void StartAtDefaultAction(UnitAction unitAction)
-        {
-            _stateMachine.SetState(unitAction);
-        }
-        public UnitAction CurrentAction => (UnitAction)_stateMachine.CurrentState;
-        private void Update()
-        {
-            _stateMachine.Update();
+            _stateMachine.AddTransition(fromActionID, toActionID, condition);
         }
     }
 
@@ -44,6 +34,13 @@ namespace TimToolBox.ToolClasses.ActionSystem
         public void OnExitState() { }
     }
 
+    public enum ActionID
+    {
+        Idle,
+        Run,
+        Attack,
+    }
+    
     public enum ActionState
     {
         Running,
