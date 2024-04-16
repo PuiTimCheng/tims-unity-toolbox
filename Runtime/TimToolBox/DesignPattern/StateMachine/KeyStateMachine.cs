@@ -40,6 +40,8 @@ namespace TimToolBox.DesignPattern.StateMachine
             return node?.State;
         }
 
+        public IState CurrentState => _currentNode?.State;
+        
         public bool RemoveState(TKey key)
         {
             var node = _nodes.GetValueOrDefault(key);
