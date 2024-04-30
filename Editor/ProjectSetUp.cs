@@ -44,17 +44,38 @@ namespace TimToolBox
             }
         }
 
-        [MenuItem("Tim'sToolBox/Setup/Import Basic Unity Packages")]
-        public static void ImportBasicUnityPackages()
-        {
+
+        [MenuItem("Tim'sToolBox/Setup/Install Unity Addressables")]
+        public static void InstallAddressables() {
             Packages.InstallPackages(new[]
             {
                 "com.unity.addressables",
+            });
+        }
+        [MenuItem("Tim'sToolBox/Setup/Install Unity AINavigation")]
+        public static void InstallUnityAINavigation()
+        {
+            Packages.InstallPackages(new[]
+            {
+                "com.unity.ai.navigation"
+            });
+        }
+        [MenuItem("Tim'sToolBox/Setup/Install Unity InputSystem")]
+        public static void InstallInputSystem() {
+            Packages.InstallPackages(new[]
+            {
                 "com.unity.inputsystem",
+            });
+        }
+        [MenuItem("Tim'sToolBox/Setup/Import Unity Cinemachine")]
+        public static void ImportCinemachine()
+        {
+            Packages.InstallPackages(new[]
+            {
                 "com.unity.cinemachine",
             });
         }
-
+        
         //[MenuItem("Tools/Setup/Install Netcode for GameObjects")]
         public static void InstallNetcodeForGameObjects()
         {
@@ -62,15 +83,6 @@ namespace TimToolBox
             {
                 "com.unity.multiplayer.tools",
                 "com.unity.netcode.gameobjects"
-            });
-        }
-
-        //[MenuItem("Tools/Setup/Install Unity AI Navigation")]
-        public static void InstallUnityAINavigation()
-        {
-            Packages.InstallPackages(new[]
-            {
-                "com.unity.ai.navigation"
             });
         }
 

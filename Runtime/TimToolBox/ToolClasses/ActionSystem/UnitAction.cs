@@ -56,6 +56,7 @@ namespace TimToolBox.ToolClasses.ActionSystem {
         Null,
         Idle,
         Walk,
+        Run,
         Attack,
     }
     
