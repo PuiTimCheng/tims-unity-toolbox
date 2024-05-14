@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using TimToolBox.DesignPattern.StateMachine;
+using TimToolBox.Extensions;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -11,57 +12,77 @@ namespace TimToolBox.ToolClasses.ActionSystem
 {
     public class UnitActionController : MonoBehaviour
     {
-        private KeyStateMachine<ActionID> _stateMachine;
-        public List<UnitAction> UnitActions;
+        private StateMachine _stateMachine;
+        public List<UnitAction> unitActions;
+        
+        public UnitAction CurrentAction => (UnitAction) _stateMachine?.CurrentState;
         
         private void Start() {
-            InitController();
-            foreach (var ea in UnitActions) {
-                AddAction(ea.ActionID, ea);
-                ea.Init();
-                ea.InstantSwitchStateEvent += InstantSwitchState;
+            _stateMachine = new StateMachine();
+            if (unitActions == null) {
+                unitActions = new List<UnitAction>();
+                ReadChildActions();
             }
-            _stateMachine.ChangeState(UnitActions[0].ActionID);
+            foreach (var unitAction in unitActions) {
+                AddAction(unitAction);
+                unitAction.Init();
+            }
+            _stateMachine.ChangeStateTo(unitActions[0]);
         }
-
+        
         public void Update() {
-            if(_stateMachine.CurrentState is UnitAction {Status: ActionState.Stopped}) 
+            var curAction = CurrentAction;
+            var actionStatus = curAction.OnActionUpdate();
+            curAction.Status = actionStatus;
+            if(actionStatus != ActionStatus.Running) {
                 BackToDefaultState();
-            _stateMachine.Update();
+            }
         }
         
         public void FixedUpdate() {
-            ((UnitAction) _stateMachine.CurrentState)?.OnFixedUpdateState();
+            (_stateMachine.CurrentState as UnitAction)?.OnActionFixedUpdate();
         }
         
         public void BackToDefaultState() {
-            _stateMachine.ChangeState(UnitActions[0].ActionID);
+            _stateMachine.ChangeStateTo(unitActions[0]);
         }
-        public void InitController()
+        public void AddAction(UnitAction unitAction)
         {
-            _stateMachine = new KeyStateMachine<ActionID>();
+            _stateMachine.AddState(unitAction);
         }
-        public void AddAction(ActionID actionID, UnitAction unitAction)
+        public UnitAction GetAction<T>() where T : UnitAction
         {
-            _stateMachine.AddState(actionID, unitAction);
+            return (UnitAction) _stateMachine.GetState<T>();
         }
-        public void AddTransition(ActionID fromActionID, ActionID toActionID,IPredicate condition)
+        public void StartAction<T>() where T : UnitAction
         {
-            _stateMachine.AddTransition(fromActionID, toActionID, condition);
+            _stateMachine.ChangeStateTo<T>();
         }
-        private void InstantSwitchState(ActionID targetActionID) {
-            _stateMachine.ChangeState(targetActionID);
+
+        [Button]
+        public void ReadChildActions() {
+            foreach (Transform child in transform) {
+                var action = child.GetComponent<UnitAction>();
+                if (action != null) {
+                    unitActions.Add(action);
+                }
+            }
         }
         
+        
+        [OnInspectorGUI]
+        public void DrawDebug() {
+            if(CurrentAction) GUILayout.Label($"Current State: {CurrentAction.OrNull()}", EditorStyles.boldLabel);
+        }
         [OnInspectorGUI]
         public void DrawButtons() {
             //finish this method
-            if (UnitActions == null) return;
+            if (unitActions == null) return;
             GUILayout.Space(10);
             GUILayout.Label("Actions:", EditorStyles.boldLabel);
-            foreach (var action in UnitActions) {
-                if (GUILayout.Button(action.ActionID.ToString())) {
-                    _stateMachine.ChangeState(action.ActionID);
+            foreach (var action in unitActions) {
+                if (GUILayout.Button(action.ToString())) {
+                    _stateMachine.ChangeStateTo(action);
                 }
             }
         }

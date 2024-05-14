@@ -7,63 +7,55 @@ using UnityEngine;
 namespace TimToolBox.ToolClasses.ActionSystem {
     public class UnitAction : MonoBehaviour, IState
     {
-        public ActionID ActionID;
-        public ActionState Status { get; protected set; }
+        public ActionStatus Status { get; set; }
         public float ActionDuration;
         
         protected Timer SelfStopTimer;
         
         public virtual void Init() {
-            Status = ActionState.Stopped;
+            Status = ActionStatus.Invalid;
             SelfStopTimer = new Timer(ActionDuration);
         }
 
-        public virtual void OnEnterState() {
-            Debug.Log($"{ActionID} OnEnterState");
-            Status = ActionState.Running;
+        public virtual void OnActionStart() {
+            Debug.Log($"OnStartAction: {GetType().Name}");
             SelfStopTimer.Start();
         }
 
-        public virtual void OnUpdateState() {
-            UpdateActionStatus();
+        public virtual ActionStatus OnActionUpdate() {
+            return ActionStatus.Running;
         }
 
-        public virtual void OnFixedUpdateState() {
+        public virtual void OnActionFixedUpdate() {
+            
         }
-
+        
+        public virtual void OnActionStop() {
+            Debug.Log($"OnExitState: {GetType().Name}");
+        }
+        
+        public void OnEnterState() {
+            // noop
+        }
+        public void OnUpdateState() {
+            // noop
+        }
         public virtual void OnExitState(){
-            Debug.Log($"{ActionID} OnExitState");
+            // noop
         }
-
-        protected virtual void UpdateActionStatus() {
-            if (SelfStopTimer.IsFinished) {
-                Status = ActionState.Stopped;
-            }
-        }
-
-        public event Action<ActionID> InstantSwitchStateEvent = _ => { };
-        public void InstantSwitchState(ActionID toActionID) {
-            InstantSwitchStateEvent(toActionID);
-        }
+        
         [OnInspectorGUI]
         public void DrawDebug() {
             GUILayout.Label($"Status: {Status}", EditorStyles.boldLabel);
         }
     }
     
-    public enum ActionID
+    public enum ActionStatus
     {
-        Null,
-        Idle,
-        Walk,
-        Run,
-        Attack,
-    }
-    
-    public enum ActionState
-    {
-        Stopped,
+        Invalid,
         Running,
+        Failed,
+        Succeeded,
     }
     
     public enum ActionEndReason

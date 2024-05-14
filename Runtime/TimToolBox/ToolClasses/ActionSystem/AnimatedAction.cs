@@ -19,22 +19,18 @@ namespace TimToolBox.ToolClasses.ActionSystem {
             SelfStopTimer.Duration = ActionDuration;
         }
         
-        public override void OnEnterState() {
-            base.OnEnterState();
-            SelfStopTimer.Start();
+        public override void OnActionStart() {
+            base.OnActionStart();
             animator.CrossFadeInFixedTime(AnimationHash,transitionDuration);
         }
-        public override void OnUpdateState() {
-            base.OnUpdateState();
-        }
-        public override void OnFixedUpdateState() {
-            base.OnFixedUpdateState();
-        }
-
-        protected override void UpdateActionStatus() {
+        public override ActionStatus OnActionUpdate() {
             if (!isLoop && SelfStopTimer.IsFinished) {
-                Status = ActionState.Stopped;
+                return ActionStatus.Succeeded;
             } 
+            return base.OnActionUpdate();
+        }
+        public override void OnActionFixedUpdate() {
+            base.OnActionFixedUpdate();
         }
 
         public override void OnExitState() {

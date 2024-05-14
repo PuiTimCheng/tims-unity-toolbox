@@ -11,7 +11,7 @@ namespace TimToolBox.DesignPattern.StateMachine {
         public void Update() {
             var transition = GetTransition();
             if (transition != null)
-                ChangeState(transition.To);
+                ChangeStateTo(transition.To);
 
             _current.State?.OnUpdateState();
         }
@@ -19,19 +19,15 @@ namespace TimToolBox.DesignPattern.StateMachine {
         public IState GetState<T>() where T : IState {
             return _nodes.GetValueOrDefault(typeof(T))?.State;
         }
-
-        public void SetState(IState state) {
-            _current = _nodes[state.GetType()];
-            _current.State?.OnEnterState();
+        public bool AddState(IState state) {
+            return GetOrAddNode(state) == null;
         }
-
-        public void ChangeState<T>() where T : IState {
+        public void ChangeStateTo<T>() where T : IState {
             var state = _nodes.GetValueOrDefault(typeof(T))?.State;
-            if (state != default) ChangeState(state);
+            if (state != default) ChangeStateTo(state);
         }
-
-        public void ChangeState(IState state) {
-            var previousState = _current.State;
+        public void ChangeStateTo(IState state) {
+            var previousState = _current?.State;
             var nextState = _nodes[state.GetType()].State;
 
             previousState?.OnExitState();
