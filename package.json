@@ -1,6 +1,6 @@
 {
   "name": "com.ptcheng.toolbox",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "displayName": "Tim's Unity Toolbox",
   "description": "Contains frequently Used Utilities and Templates",
   "unity": "2019.1",

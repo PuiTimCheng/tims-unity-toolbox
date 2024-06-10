@@ -9,6 +9,8 @@ namespace TimToolBox.ToolClasses.ActionSystem {
         public string AnimationName;
         public bool isLoop;
         public float transitionDuration;
+        public float ActionDuration;
+        private Timer SelfStopTimer;
         
         protected int AnimationHash;
 
@@ -31,11 +33,6 @@ namespace TimToolBox.ToolClasses.ActionSystem {
         }
         public override void OnActionFixedUpdate() {
             base.OnActionFixedUpdate();
-        }
-
-        public override void OnExitState() {
-            base.OnExitState();
-            Debug.Log($"{GetType()} OnExit");
         }
     }
 }

@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using TimToolBox.DesignPattern.StateMachine;
@@ -12,57 +10,50 @@ namespace TimToolBox.ToolClasses.ActionSystem
 {
     public class UnitActionController : MonoBehaviour
     {
-        private StateMachine _stateMachine;
         public List<UnitAction> unitActions;
-        
-        public UnitAction CurrentAction => (UnitAction) _stateMachine?.CurrentState;
+        public UnitAction defaultAction;
+        public UnitAction currentAction;
         
         private void Start() {
-            _stateMachine = new StateMachine();
             if (unitActions == null) {
                 unitActions = new List<UnitAction>();
                 ReadChildActions();
             }
             foreach (var unitAction in unitActions) {
-                AddAction(unitAction);
                 unitAction.Init();
             }
-            _stateMachine.ChangeStateTo(unitActions[0]);
+            if (unitActions != null && !defaultAction) defaultAction = unitActions[0];
+            StartAction(defaultAction);
         }
         
         public void Update() {
-            var curAction = CurrentAction;
-            var actionStatus = curAction.OnActionUpdate();
-            curAction.Status = actionStatus;
-            if(actionStatus != ActionStatus.Running) {
-                BackToDefaultState();
+            if (currentAction) {
+                var actionStatus = currentAction.OnActionUpdate();
+                currentAction.Status = actionStatus;
+                if(actionStatus != ActionStatus.Running) {
+                    BackToDefaultState();
+                }
             }
         }
-        
         public void FixedUpdate() {
-            (_stateMachine.CurrentState as UnitAction)?.OnActionFixedUpdate();
+            if(currentAction)currentAction.OnActionFixedUpdate();
+        }
+
+        public void StartAction(UnitAction nextAction){
+            if(currentAction) currentAction.OnActionStop();
+            currentAction = nextAction;
+            if(currentAction) currentAction.OnActionStart();
         }
         
         public void BackToDefaultState() {
-            _stateMachine.ChangeStateTo(unitActions[0]);
-        }
-        public void AddAction(UnitAction unitAction)
-        {
-            _stateMachine.AddState(unitAction);
-        }
-        public UnitAction GetAction<T>() where T : UnitAction
-        {
-            return (UnitAction) _stateMachine.GetState<T>();
-        }
-        public void StartAction<T>() where T : UnitAction
-        {
-            _stateMachine.ChangeStateTo<T>();
+            StartAction(defaultAction);
         }
 
         [Button]
         public void ReadChildActions() {
-            foreach (Transform child in transform) {
-                var action = child.GetComponent<UnitAction>();
+            unitActions.Clear();
+            var actions = transform.GetComponentsInChildren<UnitAction>();
+            foreach (var action in actions) {
                 if (action != null) {
                     unitActions.Add(action);
                 }
@@ -72,17 +63,16 @@ namespace TimToolBox.ToolClasses.ActionSystem
         
         [OnInspectorGUI]
         public void DrawDebug() {
-            if(CurrentAction) GUILayout.Label($"Current State: {CurrentAction.OrNull()}", EditorStyles.boldLabel);
+            if(currentAction) GUILayout.Label($"Current State: {currentAction.OrNull()}", EditorStyles.boldLabel);
         }
         [OnInspectorGUI]
         public void DrawButtons() {
-            //finish this method
             if (unitActions == null) return;
             GUILayout.Space(10);
             GUILayout.Label("Actions:", EditorStyles.boldLabel);
             foreach (var action in unitActions) {
                 if (GUILayout.Button(action.ToString())) {
-                    _stateMachine.ChangeStateTo(action);
+                    StartAction(action);
                 }
             }
         }

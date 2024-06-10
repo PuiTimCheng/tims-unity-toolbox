@@ -5,43 +5,22 @@ using UnityEditor;
 using UnityEngine;
 
 namespace TimToolBox.ToolClasses.ActionSystem {
-    public class UnitAction : MonoBehaviour, IState
-    {
+    public class UnitAction : MonoBehaviour {
+        [SerializeField] private bool _enableDebug = false;
         public ActionStatus Status { get; set; }
-        public float ActionDuration;
-        
-        protected Timer SelfStopTimer;
-        
         public virtual void Init() {
             Status = ActionStatus.Invalid;
-            SelfStopTimer = new Timer(ActionDuration);
         }
-
         public virtual void OnActionStart() {
-            Debug.Log($"OnStartAction: {GetType().Name}");
-            SelfStopTimer.Start();
+            if(_enableDebug) Debug.Log($"[{gameObject.name}@{GetType().Name}] : OnActionStart");
         }
-
         public virtual ActionStatus OnActionUpdate() {
             return ActionStatus.Running;
         }
-
         public virtual void OnActionFixedUpdate() {
-            
         }
-        
         public virtual void OnActionStop() {
-            Debug.Log($"OnExitState: {GetType().Name}");
-        }
-        
-        public void OnEnterState() {
-            // noop
-        }
-        public void OnUpdateState() {
-            // noop
-        }
-        public virtual void OnExitState(){
-            // noop
+            if(_enableDebug) Debug.Log($"[{gameObject.name}@{GetType().Name}] : OnActionStop");
         }
         
         [OnInspectorGUI]

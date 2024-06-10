@@ -16,8 +16,8 @@ namespace TimToolBox.DesignPattern.StateMachine {
             _current.State?.OnUpdateState();
         }
         
-        public IState GetState<T>() where T : IState {
-            return _nodes.GetValueOrDefault(typeof(T))?.State;
+        public T GetState<T>() where T : IState {
+            return (T) _nodes.GetValueOrDefault(typeof(T))?.State;
         }
         public bool AddState(IState state) {
             return GetOrAddNode(state) == null;
