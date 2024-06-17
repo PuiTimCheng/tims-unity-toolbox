@@ -10,7 +10,6 @@ namespace TimToolBox.ToolClasses.ActionSystem {
         public bool isLoop;
         public float transitionDuration;
         public float ActionDuration;
-        private Timer SelfStopTimer;
         
         protected int AnimationHash;
 
@@ -18,7 +17,6 @@ namespace TimToolBox.ToolClasses.ActionSystem {
             base.Init();
             AnimationHash = Animator.StringToHash(AnimationName);
             ActionDuration = animator.GetAnimationLength(AnimationHash);
-            SelfStopTimer.Duration = ActionDuration;
         }
         
         public override void OnActionStart() {
@@ -26,9 +24,6 @@ namespace TimToolBox.ToolClasses.ActionSystem {
             animator.CrossFadeInFixedTime(AnimationHash,transitionDuration);
         }
         public override ActionStatus OnActionUpdate() {
-            if (!isLoop && SelfStopTimer.IsFinished) {
-                return ActionStatus.Succeeded;
-            } 
             return base.OnActionUpdate();
         }
         public override void OnActionFixedUpdate() {
