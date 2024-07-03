@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Sirenix.OdinInspector;
 using TimToolBox.Extensions;
 using UnityEngine;
 
@@ -13,9 +12,8 @@ public class MoveAlongPath : MonoBehaviour
     public float moveSpeed = 5;
     public float reachedWayPointDistance;
     public float endPointSlowDistance;
-    
-    [ReadOnly] public bool reachedLastWayPointIndex;
-    [ReadOnly] public bool reachedDestination;
+    public bool reachedLastWayPointIndex;
+    public bool reachedDestination;
     
     private int _currentWaypointIndex = -1;
    
@@ -28,7 +26,6 @@ public class MoveAlongPath : MonoBehaviour
         }
     }
     
-    [Button]
     public void StartFollowPath()
     {
         _currentWaypointIndex = 0;

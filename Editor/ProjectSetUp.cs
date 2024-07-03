@@ -76,6 +76,14 @@ namespace TimToolBox
             });
         }
         
+        
+        [MenuItem("Tim'sToolBox/Setup/Install ParrelSync")]
+        public static void InstallParrelSync() {
+            Packages.InstallPackages(new[]
+            {
+                "git+https://github.com/VeriorPies/ParrelSync.git?path=/ParrelSync"
+            });
+        }
         //[MenuItem("Tools/Setup/Install Netcode for GameObjects")]
         public static void InstallNetcodeForGameObjects()
         {

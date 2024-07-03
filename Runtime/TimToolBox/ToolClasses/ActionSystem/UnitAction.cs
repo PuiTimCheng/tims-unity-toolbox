@@ -1,8 +1,11 @@
 ﻿using System;
-using Sirenix.OdinInspector;
 using TimToolBox.DesignPattern.StateMachine;
 using UnityEditor;
 using UnityEngine;
+
+#if  ODIN_INSPECTOR
+using Sirenix.OdinInspector;
+#endif
 
 namespace TimToolBox.ToolClasses.ActionSystem {
     public class UnitAction : MonoBehaviour {
@@ -22,11 +25,13 @@ namespace TimToolBox.ToolClasses.ActionSystem {
         public virtual void OnActionStop() {
             if(_enableDebug) Debug.Log($"[{gameObject.name}@{GetType().Name}] : OnActionStop");
         }
-        
+
+#if  ODIN_INSPECTOR
         [OnInspectorGUI]
         public void DrawDebug() {
             GUILayout.Label($"Status: {Status}", EditorStyles.boldLabel);
         }
+#endif
     }
     
     public enum ActionStatus

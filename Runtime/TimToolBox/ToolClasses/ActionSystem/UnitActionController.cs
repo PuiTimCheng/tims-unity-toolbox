@@ -1,10 +1,11 @@
 using System.Collections.Generic;
-using Sirenix.OdinInspector;
-using TimToolBox.DesignPattern.StateMachine;
 using TimToolBox.Extensions;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Serialization;
+
+#if  ODIN_INSPECTOR
+using Sirenix.OdinInspector;
+#endif
 
 namespace TimToolBox.ToolClasses.ActionSystem
 {
@@ -49,7 +50,9 @@ namespace TimToolBox.ToolClasses.ActionSystem
             StartAction(defaultAction);
         }
 
+#if  ODIN_INSPECTOR
         [Button]
+#endif
         public void ReadChildActions() {
             unitActions.Clear();
             var actions = transform.GetComponentsInChildren<UnitAction>();
@@ -60,7 +63,7 @@ namespace TimToolBox.ToolClasses.ActionSystem
             }
         }
         
-        
+#if  ODIN_INSPECTOR
         [OnInspectorGUI]
         public void DrawDebug() {
             if(currentAction) GUILayout.Label($"Current State: {currentAction.OrNull()}", EditorStyles.boldLabel);
@@ -76,5 +79,6 @@ namespace TimToolBox.ToolClasses.ActionSystem
                 }
             }
         }
+#endif
     }
 }
