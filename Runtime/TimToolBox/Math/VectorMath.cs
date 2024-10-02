@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace UnityUtils {
+namespace TimToolBox.Math {
     public class VectorMath {
         /// <summary>
         /// Calculates the signed angle between two vectors on a plane defined by a normal vector.

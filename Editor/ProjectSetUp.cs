@@ -24,7 +24,8 @@ public static class ProjectSetup {
         foreach (var packageFileName in packageFiles)
         {
             Debug.Log("Importing Unity Package Name: " + GetFileNameWithoutExtension(packageFileName));
-            Assets.ImportAssetFromPath(packageFileName);
+            //Assets.ImportAssetFromPath(packageFileName);
+            Assets.ImportAssetFromPath(packageFileName, "", "",false);
         }
     }
 
@@ -68,6 +69,12 @@ public static class ProjectSetup {
             string absolute =   Path.GetFullPath(path);
             var combine = Combine(rootFolder, "", path);
             ImportPackage(combine, false);
+        }
+        
+        public static void ImportAssetFromPath(string asset, string subfolder, string rootFolder = null,bool interactive = false)
+        {
+            if(rootFolder == null) rootFolder = GetDirectoryName(Application.dataPath);
+            ImportPackage(Combine(rootFolder, subfolder, asset), interactive);
         }
     }
 
