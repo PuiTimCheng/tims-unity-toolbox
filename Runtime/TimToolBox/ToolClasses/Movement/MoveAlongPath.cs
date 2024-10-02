@@ -48,7 +48,7 @@ public class MoveAlongPath : MonoBehaviour
             var dis = Vector3.Distance(transform.position, wayPoints[_currentWaypointIndex]);
             if (dis < reachedWayPointDistance)
             {
-                locomotion.MoveTowardDirection(Vector3.zero, 0);
+                //locomotion.MoveTowardDirection(Vector3.zero, 0);
                 reachedDestination = true;
                 _currentWaypointIndex = -1;
                 return;
@@ -90,7 +90,7 @@ public class MoveAlongPath : MonoBehaviour
         // Multiply the direction by our desired speed to get a velocity
         Vector3 desiredVelocity = speed * dir;
         
-        locomotion.MoveTowardDirection(dir, speed);
+        //locomotion.MoveTowardDirection(dir, speed);
         
         /*// The velocity change we want to apply
         var applyVelocityChange = desiredVelocity - rb.velocity;

@@ -38,13 +38,7 @@ namespace TimToolBox.ToolClasses.ActionSystem {
     {
         Invalid,
         Running,
-        Failed,
-        Succeeded,
-    }
-    
-    public enum ActionEndReason
-    {
-        Completed,
+        Finish,
         Interrupted,
     }
 }

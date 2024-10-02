@@ -50,7 +50,7 @@ namespace TimToolBox.DebugTool {
         }
 
         public static void DrawSphere(Vector3 origin, Quaternion rotation, float radius, Color color,
-                                      int segments = 24, float duration = 0.3f) {
+                                      int segments = 24, float duration = 0f) {
             // Draw circles in 3 orthogonal planes (XY, XZ, YZ)
             DrawCircle(origin, rotation, radius, color, segments, duration); // XY plane
             DrawCircle(origin, rotation * Quaternion.Euler(90, 0, 0), radius, color, segments, duration); // XZ plane
