@@ -8,7 +8,12 @@ namespace ImprovedTimers {
 
         protected float initialTime;
 
-        public float Progress => Mathf.Clamp(CurrentTime / initialTime, 0, 1);
+        public float Progress {
+            get {
+                if (initialTime == 0) return 1;
+                return Mathf.Clamp(CurrentTime / initialTime, 0, 1);
+            }
+        }
 
         public Action OnTimerStart = delegate { };
         public Action OnTimerStop = delegate { };
@@ -17,6 +22,10 @@ namespace ImprovedTimers {
             initialTime = value;
         }
 
+        public void SetCountdownTime(float time) {
+            initialTime = time;
+        }
+        
         public void Start() {
             CurrentTime = initialTime;
             if (!IsRunning) {
