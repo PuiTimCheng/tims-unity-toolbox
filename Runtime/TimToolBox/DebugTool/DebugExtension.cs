@@ -19,7 +19,17 @@ namespace TimToolBox.DebugTool {
         }
 
         #endregion
-        
+
+        public static void DrawPlane(Vector3 origin, Vector3 normal, Color color, float sideLength = 1,float duration = 0)
+        {
+#if UNITY_EDITOR
+            if (normal == Vector3.zero) return;
+            DrawArrow(origin, normal, color, duration);
+            var rotation = Quaternion.LookRotation(normal, Vector3.up);
+            DrawSquare(origin, rotation, sideLength, color);
+#endif
+        }
+
         /// <summary>  Draw an arrow using Debug.Draw</summary>
         public static void DrawArrow(Vector3 pos, Vector3 direction, Color color, float duration = 0, float arrowHeadLength = 0.25f, float arrowHeadAngle = 20.0f)
         {
@@ -118,12 +128,12 @@ namespace TimToolBox.DebugTool {
             float halfSide = sideLength / 2;
 
             // Calculate the corner points
-            Vector3 forward = rotation * Vector3.forward * halfSide;
+            Vector3 up = rotation * Vector3.up * halfSide;
             Vector3 right = rotation * Vector3.right * halfSide;
-            Vector3 corner1 = origin - forward - right;
-            Vector3 corner2 = origin - forward + right;
-            Vector3 corner3 = origin + forward + right;
-            Vector3 corner4 = origin + forward - right;
+            Vector3 corner1 = origin - up - right;
+            Vector3 corner2 = origin - up + right;
+            Vector3 corner3 = origin + up + right;
+            Vector3 corner4 = origin + up - right;
 
             // Draw the square
             Debug.DrawLine(corner1, corner2, color, duration);

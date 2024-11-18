@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TimToolBox.DesignPattern.EventBus;
 using UnityEngine;
 
 namespace TimToolBox.DesignPattern.EventBus {
