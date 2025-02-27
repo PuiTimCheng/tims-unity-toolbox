@@ -12,9 +12,15 @@ namespace TimToolBox.DesignPattern.StateMachine
         /// <summary>
         /// Add a state to the state machine with its Type as the key
         /// </summary>
-        public bool AddState<TState>(TState state) where TState : IState
+        public bool AddState(IState state)
         {
-            return base.AddState(typeof(TState), state);
+            if (state == null)
+            {
+                Debug.LogError("Cannot Add with a null state object");
+                return false;
+            }
+            var stateType = state.GetType();
+            return base.AddState(stateType, state);
         }
 
         /// <summary>
