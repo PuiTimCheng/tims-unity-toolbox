@@ -53,6 +53,7 @@ namespace TimToolBox.DesignPattern.StateMachine
             return node?.State;
         }
 
+        public virtual TKey CurrentKey => _currentNode != null? _currentNode.Key : default;
         public virtual IState CurrentState => _currentNode?.State;
         
         public bool AddTransition(TKey fromStateKey, TKey toStateKey, IPredicate condition) {
@@ -103,36 +104,36 @@ namespace TimToolBox.DesignPattern.StateMachine
 
             return null;
         }
-        public class StateNode<TKey>
+        public class StateNode<T>
         {
-            public TKey Key { get; }
+            public T Key { get; }
             public IState State { get; }
         
-            public HashSet<IStateTransition<TKey>> Transitions { get; }
+            public HashSet<IStateTransition<T>> Transitions { get; }
         
-            public StateNode(TKey key,IState state)
+            public StateNode(T key,IState state)
             {
                 Key = key;
                 State = state;
-                Transitions = new HashSet<IStateTransition<TKey>>();
+                Transitions = new HashSet<IStateTransition<T>>();
             }
         
-            public void AddTransition(TKey toKey, IPredicate condition) {
-                Transitions.Add(new StateTransition<TKey>(toKey, condition));
+            public void AddTransition(T toKey, IPredicate condition) {
+                Transitions.Add(new StateTransition<T>(toKey, condition));
             }
         }
-        public interface IStateTransition<TKey>
+        public interface IStateTransition<T>
         {
-            TKey ToKey { get; }
+            T ToKey { get; }
             IPredicate Condition { get; }
         }
 
-        public class StateTransition<TKey> : IStateTransition<TKey>
+        public class StateTransition<T> : IStateTransition<T>
         {
-            public TKey ToKey { get; }
+            public T ToKey { get; }
             public IPredicate Condition { get; }
 
-            public StateTransition(TKey toKey, IPredicate condition)
+            public StateTransition(T toKey, IPredicate condition)
             {
                 ToKey = toKey;
                 Condition = condition;

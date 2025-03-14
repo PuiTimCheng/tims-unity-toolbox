@@ -142,7 +142,7 @@ namespace TimToolBox.DebugTool {
             Debug.DrawLine(corner4, corner1, color, duration);
         }
         
-        public static void DrawBox(Vector3 origin, Quaternion rotation, Vector3 size, Color color, float duration = 0.3f)
+        public static void DrawBox(Vector3 origin, Quaternion rotation, Vector3 size, Color color, float duration = 0f)
         {
             float halfWidth = size.x / 2;
             float halfHeight = size.y / 2;

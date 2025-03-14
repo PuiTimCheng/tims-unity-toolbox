@@ -19,5 +19,17 @@ namespace TimToolBox.Extensions
             worldPos = Vector3.zero;
             return false;
         }
+        
+        public static bool RaycastToPlane(this Ray ray, Plane plane, out Vector3 worldPos)
+        {
+            if (plane.Raycast(ray, out float distance))
+            {
+                Vector3 collisionPoint = ray.GetPoint(distance);
+                worldPos = collisionPoint;
+                return true;
+            }
+            worldPos = Vector3.zero;
+            return false;
+        }
     }
 }

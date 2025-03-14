@@ -5,17 +5,25 @@ using UnityEngine;
 [ExecuteAlways]
 public class GridDebugDrawer : MonoBehaviour
 {
-    private GridMap _gridMap;
+    public Vector3Int gridCapacity;
     private Grid _grid;
+    [SerializeField] private bool showOnlyWhenSelected = false;
     [SerializeField] private Vector3 _planeNormal = Vector3.up;
-    
+
     private void OnEnable()
     {
-        _gridMap = GetComponent<GridMap>();
         _grid = GetComponent<Grid>();
     }
-
+    private void OnDrawGizmos()
+    {
+        if (!showOnlyWhenSelected) DrawGrid();
+    }
     private void OnDrawGizmosSelected()
+    {
+        if (showOnlyWhenSelected) DrawGrid();
+    }
+
+    private void DrawGrid()
     {
         if (_grid == null) return;
 
@@ -25,10 +33,10 @@ public class GridDebugDrawer : MonoBehaviour
 
         Gizmos.color = Color.white;
 
-        var startPoint = origin + cellSize / 2 -  _planeNormal.Multiply(cellSize / 2);
-        for (int x = 0; x <= _gridMap.gridCapacity.x-1; x++)
-        for (int y = 0; y <= _gridMap.gridCapacity.y-1; y++)
-        for (int z = 0; z <= _gridMap.gridCapacity.z-1; z++)
+        var startPoint = origin + cellGap /2 + cellSize / 2 - _planeNormal.Multiply(cellSize / 2);
+        for (int x = 0; x <= gridCapacity.x - 1; x++)
+        for (int y = 0; y <= gridCapacity.y - 1; y++)
+        for (int z = 0; z <= gridCapacity.z - 1; z++)
         {
             Vector3 cellCenter = startPoint + new Vector3(
                 x * (cellSize.x + cellGap.x),
@@ -38,7 +46,7 @@ public class GridDebugDrawer : MonoBehaviour
             DrawSquare(cellCenter, cellSize, _planeNormal);
         }
     }
-    
+
     private void DrawSquare(Vector3 center, Vector3 size, Vector3 normal)
     {
         // Calculate the orientation of the square based on the plane normal
